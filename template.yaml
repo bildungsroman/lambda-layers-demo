@@ -5,30 +5,46 @@ Resources:
   DeserializeDemoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: LayersApp-DeserializeDemo
-      Description: Layers App Deserialize Demo Function
+      FunctionName: !Sub ${AWS::StackName}-DeserializeDemo
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: DeserializeDemoFunction
       Role: arn:aws:iam::093833860903:role/MyLambdaRole
       CodeUri: deserialize-demo/
       Handler: main.lambda_handler
       Runtime: python3.7
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
       Layers:
         - !Ref MyLambdaLayer
   ObjectPathDataDemoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: LayersApp-ObjectPathDataDemo
-      Description: Layers App Deserialize Demo Function
+      FunctionName: !Sub ${AWS::StackName}-ObjectPathDataDemo
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: ObjectPathDataDemoFunction
       Role: arn:aws:iam::093833860903:role/MyLambdaRole
       CodeUri: objectpath-data-demo/
       Handler: main.lambda_handler
       Runtime: python3.7
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
       Layers:
         - !Ref MyLambdaLayer
   MyLambdaLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
       LayerName: MyLambdaLayer
-      Description: 'My Lambda Layer with Deserialize Function, Objectpath Module & AWS Regions JSON'
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Layer ${ResourceName}
+        - ResourceName: MyLambdaLayer
       ContentUri: lambda-layers/my-lambda-layer.zip
       CompatibleRuntimes:
         - python3.6
@@ -41,3 +57,10 @@ Outputs:
     Description: MyLambdaLayer ARN
     Export:
       Name: my-lambda-layer-arn
+Parameters:
+  StackTagName:
+    Type: String
+    Description: Stack Name (injected by Stackery at deployment time)
+  EnvironmentTagName:
+    Type: String
+    Description: Environment Name (injected by Stackery at deployment time)
