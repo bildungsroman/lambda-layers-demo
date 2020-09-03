@@ -9,7 +9,6 @@ Resources:
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
         - ResourceName: DeserializeDemoFunction
-      Role: arn:aws:iam::093833860903:role/MyLambdaRole
       CodeUri: deserialize-demo/
       Handler: main.lambda_handler
       Runtime: python3.7
@@ -27,7 +26,6 @@ Resources:
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
         - ResourceName: ObjectPathDataDemoFunction
-      Role: arn:aws:iam::093833860903:role/MyLambdaRole
       CodeUri: objectpath-data-demo/
       Handler: main.lambda_handler
       Runtime: python3.7
